@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 import ru.practicum.EndpointHitDto;
 import ru.practicum.EndpointHitDtoResp;
 
+import java.security.InvalidParameterException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Comparator;
@@ -30,24 +31,24 @@ public class EndpointHitServiceImpl implements EndpointHitService {
     public List<EndpointHitDtoResp> getStat(String start, String end, List<String> uris, Boolean unique) {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         List<EndpointHitDtoResp> result = null;
-        try {
             LocalDateTime ldtStart = LocalDateTime.parse(start, dtf);
             LocalDateTime ldtEnd = LocalDateTime.parse(end, dtf);
-
-            if (unique) {
-                result = endpointHitRepository.getStatUrisIsUnique(ldtStart, ldtEnd, uris)
-                        .stream()
-                        .sorted(Comparator.comparing(EndpointHitDtoResp::getHits).reversed())
-                        .collect(Collectors.toList());
-            } else {
-                result = endpointHitRepository.getStat(ldtStart, ldtEnd, uris)
-                        .stream()
-                        .sorted(Comparator.comparing(EndpointHitDtoResp::getHits).reversed())
-                        .collect(Collectors.toList());
-            }
-
-        } catch (Exception e) {
+        if (start == null || end == null || uris == null || unique == null) {
+            throw new InvalidParameterException();
         }
+        if (unique) {
+            result = endpointHitRepository.getStatUrisIsUnique(ldtStart, ldtEnd, uris)
+                    .stream()
+                    .sorted(Comparator.comparing(EndpointHitDtoResp::getHits).reversed())
+                    .collect(Collectors.toList());
+        } else {
+            result = endpointHitRepository.getStat(ldtStart, ldtEnd, uris)
+                    .stream()
+                    .sorted(Comparator.comparing(EndpointHitDtoResp::getHits).reversed())
+                    .collect(Collectors.toList());
+        }
+
+
         return result;
     }
 }
