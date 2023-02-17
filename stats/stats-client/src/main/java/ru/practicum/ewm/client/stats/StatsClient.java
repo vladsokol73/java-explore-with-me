@@ -32,6 +32,7 @@ public class StatsClient {
     private final String statsServiceUri;
     private final ObjectMapper json;
     private final HttpClient httpClient;
+    private final Duration duration = Duration.ofSeconds(2);
 
 
     public StatsClient(@Value("${spring.application.name}") String application,
@@ -41,7 +42,7 @@ public class StatsClient {
         this.statsServiceUri = statsServiceUri;
         this.json = json;
         this.httpClient = HttpClient.newBuilder()
-                .connectTimeout(Duration.ofSeconds(2))
+                .connectTimeout(duration)
                 .build();
     }
 
@@ -104,18 +105,8 @@ public class StatsClient {
         String start = encode(DTF.format(request.getStart()));
         String end = encode(DTF.format(request.getEnd()));
 
-        String queryString = String.format("?start=%s&end=%s&unique=%b%&application=%s",
+        return String.format("?start=%s&end=%s&unique=%b%&application=%s",
                 start, end, true, application);
-//
-//        if(request.hasUriCondition()) {
-//            queryString += "&uris" + String.join(",", request.getUris());
-//        }
-//
-//        if(request.hasLimitCondition()) {
-//            queryString += "&limit" + String.join(",", request.getLimit());
-//        }
-
-        return queryString;
     }
 
     private String encode(String value) {

@@ -19,7 +19,7 @@ public class EndpointHitController {
 
     @PostMapping(path = "/hit")
     public void creatHit(@RequestBody EndpointHitDto endpointHitDto) {
-        EndpointHit endpointHit = endpointHitService.creat(endpointHitDto);
+        EndpointHit endpointHit = endpointHitService.create(endpointHitDto);
         System.out.println(endpointHit.getIp() + endpointHit.getApp() + endpointHit.getUri());
     }
 

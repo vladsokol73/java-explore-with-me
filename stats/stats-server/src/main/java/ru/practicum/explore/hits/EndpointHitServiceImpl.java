@@ -20,7 +20,7 @@ public class EndpointHitServiceImpl implements EndpointHitService {
     }
 
     @Override
-    public EndpointHit creat(EndpointHitDto endpointHitDto) {
+    public EndpointHit create(EndpointHitDto endpointHitDto) {
         EndpointHit endpointHit = EndpointHitMapper.toEndpointHit(endpointHitDto);
         endpointHit.setTimestamp(LocalDateTime.now());
         return endpointHitRepository.save(endpointHit);
@@ -29,21 +29,24 @@ public class EndpointHitServiceImpl implements EndpointHitService {
     @Override
     public List<EndpointHitDtoResp> getStat(String start, String end, List<String> uris, Boolean unique) {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        LocalDateTime ldtStart = LocalDateTime.parse(start,dtf);
-        LocalDateTime ldtEnd = LocalDateTime.parse(end, dtf);
+        List<EndpointHitDtoResp> result = null;
+        try {
+            LocalDateTime ldtStart = LocalDateTime.parse(start, dtf);
+            LocalDateTime ldtEnd = LocalDateTime.parse(end, dtf);
 
-        List<EndpointHitDtoResp> result;
+            if (unique) {
+                result = endpointHitRepository.getStatUrisIsUnique(ldtStart, ldtEnd, uris)
+                        .stream()
+                        .sorted(Comparator.comparing(EndpointHitDtoResp::getHits).reversed())
+                        .collect(Collectors.toList());
+            } else {
+                result = endpointHitRepository.getStat(ldtStart, ldtEnd, uris)
+                        .stream()
+                        .sorted(Comparator.comparing(EndpointHitDtoResp::getHits).reversed())
+                        .collect(Collectors.toList());
+            }
 
-        if (unique) {
-            result = endpointHitRepository.getStatUrisIsUnique(ldtStart, ldtEnd, uris)
-                    .stream()
-                    .sorted(Comparator.comparing(EndpointHitDtoResp::getHits).reversed())
-                    .collect(Collectors.toList());
-        } else {
-            result = endpointHitRepository.getStat(ldtStart, ldtEnd, uris)
-                    .stream()
-                    .sorted(Comparator.comparing(EndpointHitDtoResp::getHits).reversed())
-                    .collect(Collectors.toList());;
+        } catch (Exception e) {
         }
         return result;
     }
