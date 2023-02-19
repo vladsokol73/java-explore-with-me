@@ -1,12 +1,12 @@
 package ru.practicum.explore.hits;
 
-import ru.practicum.EndpointHitDto;
-import ru.practicum.EndpointHitDtoResp;
+import ru.practicum.EndpointHit.EndpointHitDto;
+import ru.practicum.EndpointHit.ViewStats;
 
 import java.util.List;
 
 public interface EndpointHitService {
-    EndpointHit create(EndpointHitDto endpointHitDto);
+    EndpointHit creat(EndpointHitDto endpointHitDto);
 
-    List<EndpointHitDtoResp> getStat(String start, String end, List<String> uris, Boolean unique);
+    List<ViewStats> getStat(String start, String end, List<String> uris, Boolean unique);
 }

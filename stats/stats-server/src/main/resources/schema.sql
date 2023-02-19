@@ -9,4 +9,3 @@ CREATE TABLE IF NOT EXISTS hits
     timestamp TIMESTAMP,
     CONSTRAINT pk_hits PRIMARY KEY (id)
 );
-

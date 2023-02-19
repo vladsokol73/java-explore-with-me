@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class EndpointHit {
+public class EndpointHit { //формат "yyyy-MM-dd HH:mm:ss"
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,14 +21,14 @@ public class EndpointHit {
     private Long id;
 
     @Column
-    private String app;
+    private String app; //Идентификатор сервиса для которого записывается информация example: ewm-main-service
 
     @Column
-    private String uri;
+    private String uri;  //URI для которого был осуществлен запрос example: /events/1
 
     @Column
-    private String ip;
+    private String ip;  //IP-адрес пользователя, осуществившего запрос example: 192.163.0.1
 
     @Column
-    private LocalDateTime timestamp;
+    private LocalDateTime timestamp;  //Дата и время, когда был совершен запрос к эндпоинту
 }

@@ -1,10 +1,9 @@
 package ru.practicum.explore.hits;
 
 import org.springframework.stereotype.Service;
-import ru.practicum.EndpointHitDto;
-import ru.practicum.EndpointHitDtoResp;
+import ru.practicum.EndpointHit.EndpointHitDto;
+import ru.practicum.EndpointHit.ViewStats;
 
-import java.security.InvalidParameterException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Comparator;
@@ -14,41 +13,38 @@ import java.util.stream.Collectors;
 @Service
 public class EndpointHitServiceImpl implements EndpointHitService {
 
-    EndpointHitRepository endpointHitRepository;
+    private final EndpointHitRepository endpointHitRepository;
 
     public EndpointHitServiceImpl(EndpointHitRepository endpointHitRepository) {
         this.endpointHitRepository = endpointHitRepository;
     }
 
     @Override
-    public EndpointHit create(EndpointHitDto endpointHitDto) {
+    public EndpointHit creat(EndpointHitDto endpointHitDto) {
         EndpointHit endpointHit = EndpointHitMapper.toEndpointHit(endpointHitDto);
         endpointHit.setTimestamp(LocalDateTime.now());
         return endpointHitRepository.save(endpointHit);
     }
 
     @Override
-    public List<EndpointHitDtoResp> getStat(String start, String end, List<String> uris, Boolean unique) {
+    public List<ViewStats> getStat(String start, String end, List<String> uris, Boolean unique) {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        List<EndpointHitDtoResp> result = null;
-            LocalDateTime ldtStart = LocalDateTime.parse(start, dtf);
-            LocalDateTime ldtEnd = LocalDateTime.parse(end, dtf);
-        if (start == null || end == null || uris == null || unique == null) {
-            throw new InvalidParameterException();
-        }
+        LocalDateTime ldtStart = LocalDateTime.parse(start,dtf);
+        LocalDateTime ldtEnd = LocalDateTime.parse(end, dtf);
+
+        List<ViewStats> result;
+
         if (unique) {
             result = endpointHitRepository.getStatUrisIsUnique(ldtStart, ldtEnd, uris)
                     .stream()
-                    .sorted(Comparator.comparing(EndpointHitDtoResp::getHits).reversed())
+                    .sorted(Comparator.comparing(ViewStats::getHits).reversed())
                     .collect(Collectors.toList());
         } else {
             result = endpointHitRepository.getStat(ldtStart, ldtEnd, uris)
                     .stream()
-                    .sorted(Comparator.comparing(EndpointHitDtoResp::getHits).reversed())
+                    .sorted(Comparator.comparing(ViewStats::getHits).reversed())
                     .collect(Collectors.toList());
         }
-
-
         return result;
     }
 }
