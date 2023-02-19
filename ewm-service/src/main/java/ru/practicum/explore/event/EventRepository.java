@@ -16,6 +16,8 @@ public interface EventRepository extends JpaRepository<Event, Long> {
 
     List<Event> findEventsByInitiator(User user, Pageable pageable);
 
+    List<Event> findEventsByInitiatorId(Long userId, Pageable pageable);
+
     List<Event> findAllByAnnotationContainingOrDescriptionContainingAndCategoryInAndPaidAndEventDateBetween(
             String s, String s2, List<Category> categoryList, Boolean paid, LocalDateTime start, LocalDateTime end);
 

@@ -1,9 +1,11 @@
 package ru.practicum.explore.hits;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.EndpointHit.EndpointHitDto;
-import ru.practicum.EndpointHit.EndpointHitDtoResp;
+import ru.practicum.EndpointHit.ViewStats;
 
 import java.util.List;
 
@@ -18,16 +20,16 @@ public class EndpointHitController {
     }
 
     @PostMapping(path = "/hit")
-    public void creatHit(@RequestBody EndpointHitDto endpointHitDto) {
-        EndpointHit endpointHit = endpointHitService.creat(endpointHitDto);
-        System.out.println(endpointHit.getIp() + endpointHit.getApp() + endpointHit.getUri());
+    public ResponseEntity<Void> creatHit(@RequestBody EndpointHitDto endpointHitDto) {
+        endpointHitService.creat(endpointHitDto);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @GetMapping(path = "/stats")
-    public List<EndpointHitDtoResp> getStat(@RequestParam (value = "start") String start,
-                                            @RequestParam (value = "end") String end,
-                                            @RequestParam (value = "uris") List<String> uris,
-                                            @RequestParam (value = "unique", defaultValue = "false") Boolean unique) {
+    public List<ViewStats> getStat(@RequestParam (value = "start") String start,
+                                   @RequestParam (value = "end") String end,
+                                   @RequestParam (value = "uris") List<String> uris,
+                                   @RequestParam (value = "unique", defaultValue = "false") Boolean unique) {
         return endpointHitService.getStat(start, end, uris, unique);
     }
 }

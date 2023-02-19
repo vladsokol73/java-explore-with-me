@@ -52,7 +52,7 @@ public class CategoryServiceImpl implements CategoryService {
         Category category = categoryRepository.findById(catId)
                 .orElseThrow(() -> new NotFoundException("Category  with id=" + catId + " was not found"));
         if (Objects.isNull(categoryDto.getName())) {
-            throw new BadRequest ("Invalid category name");
+            throw new BadRequest("Invalid category name");
         }
         if (category.getName().equals(categoryDto.getName())) {
             throw new BadRequest("There is already a category named - " + categoryDto.getName());

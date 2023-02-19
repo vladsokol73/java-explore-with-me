@@ -10,7 +10,7 @@ import javax.validation.constraints.Min;
 @Builder
 public class NewEventDto {
 
-    @Min (20)
+    @Min(20)
     @Max(2000)
     private String annotation;  //Краткое описание события
 
@@ -34,7 +34,5 @@ public class NewEventDto {
     */
     private Boolean requestModeration;
 
-    @Min(3)
-    @Max(120)
     private String title;  //Заголовок события
 }

@@ -2,7 +2,7 @@ package ru.practicum.explore.compilation;
 
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
-import ru.practicum.CompilationDto;
+import ru.practicum.compilations.CompilationDto;
 import ru.practicum.compilations.NewCompilationDto;
 import ru.practicum.compilations.UpdateCompilationRequest;
 import ru.practicum.explore.error.BadRequest;
@@ -45,20 +45,17 @@ public class CompilationServiceImpl implements CompilationService {
     @Override
     public CompilationDto updateCompilation(Long compId, UpdateCompilationRequest compilationRequest) {
 
-        Compilation compilation =compilationRepository.findById(compId)
+        Compilation compilation = compilationRepository.findById(compId)
                 .orElseThrow(() -> new NotFoundException("Compilation with id=" + compId + "was not found"));
 
         compilation.setEvents(eventRepository.findAllByIdIn(compilationRequest.getEvents()));
-
-        if(Objects.nonNull(compilationRequest.getPinned())) {
+        if (Objects.nonNull(compilationRequest.getPinned())) {
             compilation.setPinned(compilationRequest.getPinned());
         }
         if (Objects.nonNull(compilationRequest.getTitle())) {
             compilation.setTitle(compilationRequest.getTitle());
         }
-
         Compilation compilationResult = compilationRepository.save(compilation);
-
         return CompilationMapper.toCompilationDto(compilationResult);
     }
 

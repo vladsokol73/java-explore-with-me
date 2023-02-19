@@ -9,7 +9,7 @@ public interface EventService {
 
    EventFullDto addEvent(Long userId, NewEventDto eventDto);
 
-   EventFullDto getEventByUser(Long userId, Long eventId);
+   EventFullDto getEvent(Long userId, Long eventId);
 
    EventFullDto updateEventByUser(Long userId, Long eventId, UpdateEventUserRequest eventUserRequest);
 

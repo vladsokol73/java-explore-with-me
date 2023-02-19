@@ -1,8 +1,11 @@
 package ru.practicum.explore.event;
 
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import ru.practicum.EndpointHit.ViewStats;
 import ru.practicum.event.*;
+import ru.practicum.ewm.client.stats.StatsClient;
 import ru.practicum.explore.category.Category;
 import ru.practicum.explore.category.CategoryRepository;
 import ru.practicum.explore.error.BadRequest;
@@ -22,7 +25,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
-public class EventServiceImpl implements EventService{
+public class EventServiceImpl implements EventService {
 
     private final DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
     private final EventRepository eventRepository;
@@ -31,19 +34,25 @@ public class EventServiceImpl implements EventService{
     private final LocationRepository locationRepository;
     private final RequestRepository requestRepository;
 
-    public EventServiceImpl(EventRepository eventRepository, UserRepository userRepository, CategoryRepository categoryRepository, LocationRepository locationRepository,
-                            RequestRepository requestRepository) {
+    private final StatsClient statsClient;
+
+
+
+    public EventServiceImpl(EventRepository eventRepository, UserRepository userRepository,
+                            CategoryRepository categoryRepository, LocationRepository locationRepository,
+                            RequestRepository requestRepository, StatsClient statsClient) {
         this.eventRepository = eventRepository;
         this.userRepository = userRepository;
         this.categoryRepository = categoryRepository;
         this.locationRepository = locationRepository;
         this.requestRepository = requestRepository;
+        this.statsClient = statsClient;
     }
 
     @Override
     public List<EventShortDto> getEventsByUser(Long userId, Integer from, Integer size) {
-        Optional<User> optionalUser = userRepository.findById(userId);
-        return eventRepository.findEventsByInitiator(optionalUser.get(), PageRequest.of(from, size))
+        List<Event> list = eventRepository.findEventsByInitiatorId(userId, PageRequest.of(from, size));
+        return list
                 .stream()
                 .map(EventMapper::toEventShortDto)
                 .collect(Collectors.toList());
@@ -55,7 +64,7 @@ public class EventServiceImpl implements EventService{
             throw new BadRequest("Invalid request");
         }
         if (LocalDateTime.parse(eventDto.getEventDate(), dtf).isBefore(LocalDateTime.now().minusHours(2L))) {
-            throw new ConflictException("Field: eventDate. Error: должно содержать дату, которая еще не наступила." +
+            throw new ConflictException("Field: eventDate. Error: must contain a date that has not yet arrived." +
                     " Value:" + LocalDateTime.now());
         }
         Optional<User> optionalUser = userRepository.findById(userId);
@@ -72,7 +81,7 @@ public class EventServiceImpl implements EventService{
     }
 
     @Override
-    public EventFullDto getEventByUser(Long userId, Long eventId) {
+    public EventFullDto getEvent(Long userId, Long eventId) {
         User optionalUser = userRepository.findById(userId)
                 .orElseThrow(() ->  new NotFoundException("User with id=" + userId + "was not found"));
         Event event = eventRepository.findById(eventId)
@@ -97,8 +106,7 @@ public class EventServiceImpl implements EventService{
                 event.setDescription(eventUserRequest.getDescription());
             }
             if (Objects.nonNull(eventUserRequest.getEventDate())) {
-                event.setEventDate(LocalDateTime.parse(eventUserRequest.getEventDate(),
-                        DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+                event.setEventDate(LocalDateTime.parse(eventUserRequest.getEventDate(), dtf));
                 if (event.getEventDate().isBefore(LocalDateTime.now().plusHours(2L))) {
                     throw new ConflictException("Event cannot be earlier than two hours from the current moment");
                 }
@@ -150,8 +158,8 @@ public class EventServiceImpl implements EventService{
             start = LocalDateTime.now().withNano(0);
             end = LocalDateTime.now().withNano(0).plusYears(1000L);
         } else {
-            start = LocalDateTime.parse(rangeStart, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-            end = LocalDateTime.parse(rangeEnd, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+            start = LocalDateTime.parse(rangeStart, dtf);
+            end = LocalDateTime.parse(rangeEnd, dtf);
         }
         List<Event> list =
                 eventRepository.findEventsByInitiatorInAndStateInAndCategoryInAndEventDateBetween(
@@ -167,8 +175,8 @@ public class EventServiceImpl implements EventService{
         Event event = eventRepository.findById(eventId)
                 .orElseThrow(() -> new NotFoundException("Event with id=" + eventId + "was not found"));
         if (Objects.nonNull(eventAdminRequest.getEventDate())) {
-            if (LocalDateTime.parse(eventAdminRequest.getEventDate(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")).
-                    isBefore(LocalDateTime.now().plusHours(1L))) {
+            if (LocalDateTime.parse(eventAdminRequest.getEventDate(), dtf)
+                            .isBefore(LocalDateTime.now().plusHours(1L))) {
                 throw new ConflictException("Event cannot be earlier than one hours from the current moment");
             }
         }
@@ -222,21 +230,24 @@ public class EventServiceImpl implements EventService{
         return EventMapper.toEventFullDto(event);
     }
 
-    @Override           //---------------//TODO-------------------------------------
+    @Override
     public List<EventShortDto> getEventsWithFilters(String text, List<Long> categories, Boolean paid,
                                                     String rangeStart, String rangeEnd, Boolean onlyAvailable,
                                                     String sort, Integer from, Integer size) {
-        //только события у которых не исчерпан лимит запросов на участие???????????????????????
-        //проверить  --> Обратите внимание: ...
-        List<Category> categoryList = categoryRepository.findAllById(categories);
+        List<Category> categoryList;
+        if (Objects.nonNull(categories)) {
+            categoryList = categoryRepository.findAllById(categories);
+        } else {
+            categoryList = categoryRepository.findAll();
+        }
         LocalDateTime start;
         LocalDateTime end;
         if (Objects.isNull(rangeStart) && Objects.isNull(rangeEnd)) {
             start = LocalDateTime.now().withNano(0);
             end = LocalDateTime.now().withNano(0).plusYears(1000L);
         } else {
-            start = LocalDateTime.parse(rangeStart, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-            end = LocalDateTime.parse(rangeEnd, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+            start = LocalDateTime.parse(rangeStart, dtf);
+            end = LocalDateTime.parse(rangeEnd, dtf);
         }
 
         List<Event> list = eventRepository
@@ -256,22 +267,27 @@ public class EventServiceImpl implements EventService{
                         .collect(Collectors.toList());
             }
         }
-        //TODO  --  обратиться в сервер статистики --
+        String s = LocalDateTime.now().minusDays(10L).format(dtf);
+        String s2 = LocalDateTime.now().format(dtf);
+        statsClient.getStat(s, s2, "/events", false);
         return sortedList.stream().map(EventMapper::toEventShortDto).collect(Collectors.toList());
     }
 
     @Override
     public EventFullDto getEvent(Long id) {
         Event event = eventRepository.findById(id)
-                .orElseThrow(()->new NotFoundException("Event with id=" + id + "was not found"));
+                .orElseThrow(() -> new NotFoundException("Event with id=" + id + "was not found"));
         if (!event.getState().equals(State.PUBLISHED)) {
             throw new NotFoundException("Event with id=" + id + "was not found");
         }
-        //TODO   --  обратиться в сервер статистики --
-        //информация о событии должна включать в себя количество просмотров
-        setConfirmedRequests(event);// и количество подтвержденных запросов
-        //обратиться в сервер статистики
-
+        setConfirmedRequests(event);
+        String s = LocalDateTime.now().minusDays(10L).format(dtf);
+        String s2 = LocalDateTime.now().format(dtf);
+        ResponseEntity<List<ViewStats>> responseList = statsClient.getStat(s, s2, "/events/" + id, false);
+        List<ViewStats> list = responseList.getBody();
+        if (Objects.nonNull(list) && list.size() != 0) {
+            event.setViews(list.get(0).getHits());
+        }
         return EventMapper.toEventFullDto(event);
     }
 

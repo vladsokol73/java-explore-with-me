@@ -25,7 +25,8 @@ public class RequestServiceImpl implements RequestService {
     private final EventRepository eventRepository;
     private final UserRepository userRepository;
 
-    public RequestServiceImpl(RequestRepository requestRepository, EventRepository eventRepository, UserRepository userRepository) {
+    public RequestServiceImpl(RequestRepository requestRepository, EventRepository eventRepository,
+                              UserRepository userRepository) {
         this.requestRepository = requestRepository;
         this.eventRepository = eventRepository;
         this.userRepository = userRepository;
@@ -79,10 +80,8 @@ public class RequestServiceImpl implements RequestService {
     @Override
     public EventRequestStatusUpdateResult updateRequestsStatus(Long userId,
                                                                Long eventId,
-                                                               EventRequestStatusUpdateRequest eventRequestStatusUpdateRequest) {
-
+                                                               EventRequestStatusUpdateRequest updateRequest) {
         EventRequestStatusUpdateResult result = new EventRequestStatusUpdateResult();
-
         Event event = eventRepository.findById(eventId)
                 .orElseThrow(() -> new NotFoundException("Event with id=" + eventId + "was not found"));
 
@@ -90,11 +89,9 @@ public class RequestServiceImpl implements RequestService {
                 <= requestRepository.countRequestByEventIdAndStatus(eventId, RequestStatus.CONFIRMED)) {
             throw new ConflictException("Event has reached the limit of requests for participation");
         }
-        List<Long> requestIds = eventRequestStatusUpdateRequest.getRequestIds();
-
+        List<Long> requestIds = updateRequest.getRequestIds();
         List<Request> list = requestRepository.findAllByEventIdAndEventInitiatorIdAndIdIn(eventId, userId, requestIds);
-
-        switch (eventRequestStatusUpdateRequest.getStatus()) {
+        switch (updateRequest.getStatus()) {
             case "CONFIRMED":
                     for (Request request : list) {
                         request.setStatus(RequestStatus.CONFIRMED);
@@ -102,15 +99,12 @@ public class RequestServiceImpl implements RequestService {
                         result.getConfirmedRequests().add(RequestMapper.toParticipationRequestDto(request));
                     }
                 break;
-
             case "REJECTED":
                 for (Request request : list) {
                     request.setStatus(RequestStatus.REJECTED);
                     requestRepository.saveAndFlush(request);
                     result.getRejectedRequests().add(RequestMapper.toParticipationRequestDto(request));
                 }
-
-
         }
         return result;
     }

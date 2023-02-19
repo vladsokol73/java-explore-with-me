@@ -2,7 +2,7 @@ package ru.practicum.explore.hits;
 
 import org.springframework.stereotype.Service;
 import ru.practicum.EndpointHit.EndpointHitDto;
-import ru.practicum.EndpointHit.EndpointHitDtoResp;
+import ru.practicum.EndpointHit.ViewStats;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -27,22 +27,22 @@ public class EndpointHitServiceImpl implements EndpointHitService {
     }
 
     @Override
-    public List<EndpointHitDtoResp> getStat(String start, String end, List<String> uris, Boolean unique) {
+    public List<ViewStats> getStat(String start, String end, List<String> uris, Boolean unique) {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         LocalDateTime ldtStart = LocalDateTime.parse(start,dtf);
         LocalDateTime ldtEnd = LocalDateTime.parse(end, dtf);
 
-        List<EndpointHitDtoResp> result;
+        List<ViewStats> result;
 
         if (unique) {
             result = endpointHitRepository.getStatUrisIsUnique(ldtStart, ldtEnd, uris)
                     .stream()
-                    .sorted(Comparator.comparing(EndpointHitDtoResp::getHits).reversed())
+                    .sorted(Comparator.comparing(ViewStats::getHits).reversed())
                     .collect(Collectors.toList());
         } else {
             result = endpointHitRepository.getStat(ldtStart, ldtEnd, uris)
                     .stream()
-                    .sorted(Comparator.comparing(EndpointHitDtoResp::getHits).reversed())
+                    .sorted(Comparator.comparing(ViewStats::getHits).reversed())
                     .collect(Collectors.toList());
         }
         return result;

@@ -4,7 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.practicum.CompilationDto;
+import ru.practicum.compilations.CompilationDto;
 import ru.practicum.category.CategoryDto;
 import ru.practicum.category.NewCategoryDto;
 import ru.practicum.compilations.NewCompilationDto;
@@ -21,6 +21,7 @@ import ru.practicum.user.UserDto;
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
+
 @Slf4j
 @RestController
 @RequestMapping("admin/")
@@ -31,7 +32,8 @@ public class AdminController {
     private final EventService eventService;
     private final CompilationService compilationService;
 
-    public AdminController(UserService userService, CategoryService categoryService, EventService eventService, CompilationService compilationService) {
+    public AdminController(UserService userService, CategoryService categoryService,
+                           EventService eventService, CompilationService compilationService) {
         this.userService = userService;
         this.categoryService = categoryService;
         this.eventService = eventService;
@@ -46,7 +48,7 @@ public class AdminController {
     }
 
     @PostMapping("/users")
-    public ResponseEntity<UserDto> addUser(@RequestBody NewUserRequest newUserRequest) {
+    public ResponseEntity<UserDto> addUser(@Valid @RequestBody NewUserRequest newUserRequest) {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(userService.addUser(newUserRequest));
@@ -79,13 +81,14 @@ public class AdminController {
 
     @GetMapping("/events")
     public ResponseEntity<List<EventFullDto>> searchEventsByAdmin(@RequestParam List<Long> users,
-                                                          @RequestParam (required = false) List<String> states,
-                                                          @RequestParam List<Long> categories,
-                                                          @RequestParam (required = false) String rangeStart,
-                                                          @RequestParam (required = false) String rangeEnd,
-                                                          @RequestParam (name = "from", defaultValue = "0") Integer from,
-                                                          @RequestParam (name = "size", defaultValue = "10") Integer size) {
-        return ResponseEntity.ok(eventService.searchEventsByAdmin(users, states, categories, rangeStart, rangeEnd, from, size));
+                                                  @RequestParam (required = false) List<String> states,
+                                                  @RequestParam List<Long> categories,
+                                                  @RequestParam (required = false) String rangeStart,
+                                                  @RequestParam (required = false) String rangeEnd,
+                                                  @RequestParam (name = "from", defaultValue = "0") Integer from,
+                                                  @RequestParam (name = "size", defaultValue = "10") Integer size) {
+        return ResponseEntity.ok(eventService.searchEventsByAdmin(users, states,
+                categories, rangeStart, rangeEnd, from, size));
     }
 
     @PatchMapping("/events/{eventId}")

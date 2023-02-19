@@ -4,6 +4,7 @@ import lombok.Data;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
+
 @Data
 public class UpdateEventUserRequest {  //Дата и время - yyyy-MM-dd HH:mm:ss
 

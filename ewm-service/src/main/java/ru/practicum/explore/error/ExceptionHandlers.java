@@ -39,7 +39,8 @@ public class ExceptionHandlers {
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.CONFLICT)
-    public ApiError handleViolationException(final DataIntegrityViolationException exception) {
+    public ApiError handleViolationException(DataIntegrityViolationException exception) {
+
         return ApiError.builder()
                 .errors(List.of(exception.getClass().getName()))
                 .status(HttpStatus.CONFLICT)
@@ -68,6 +69,18 @@ public class ExceptionHandlers {
                 .errors(List.of(error.getClass().getName()))
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .message(error.getLocalizedMessage())
+                .timestamp(LocalDateTime.now())
+                .build();
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ApiError handleThrowableExceptions(final Throwable error) {
+        return ApiError.builder()
+                .errors(List.of(error.getClass().getName()))
+                .status(HttpStatus.BAD_REQUEST)
+                .message(error.getLocalizedMessage())
+                .reason("Throwable exception")
                 .timestamp(LocalDateTime.now())
                 .build();
     }

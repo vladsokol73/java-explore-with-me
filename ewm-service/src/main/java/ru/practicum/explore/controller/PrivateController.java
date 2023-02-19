@@ -30,23 +30,24 @@ public class PrivateController {
     }
 
     @GetMapping("/{userId}/events")
-    public ResponseEntity<List<EventShortDto>> getEventsByUser
-            (@PathVariable Long userId,
+    public ResponseEntity<List<EventShortDto>> getEventsByUser(@PathVariable Long userId,
             @RequestParam (name = "from", defaultValue = "0") Integer from,
             @RequestParam (name = "size", defaultValue = "10") Integer size) {
         return ResponseEntity.ok(eventService.getEventsByUser(userId, from, size));
     }
 
     @PostMapping("/{userId}/events")
-    public ResponseEntity<EventFullDto> addEvent(@PathVariable Long userId, @RequestBody NewEventDto eventDto) {
+    public ResponseEntity<EventFullDto> addEvent(@PathVariable Long userId,
+                                                 @RequestBody NewEventDto eventDto) {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(eventService.addEvent(userId, eventDto));
     }
 
     @GetMapping("/{userId}/events/{eventId}")
-    public ResponseEntity<EventFullDto> getEventByUser(@PathVariable Long userId, @PathVariable Long eventId) {
-        return ResponseEntity.ok(eventService.getEventByUser(userId, eventId));
+    public ResponseEntity<EventFullDto> getEventByUser(@PathVariable Long userId,
+                                                       @PathVariable Long eventId) {
+        return ResponseEntity.ok(eventService.getEvent(userId, eventId));
     }
 
     @PatchMapping("/{userId}/events/{eventId}")
@@ -78,12 +79,13 @@ public class PrivateController {
 
     @PostMapping("/{userId}/requests")
     public ResponseEntity<ParticipationRequestDto> addRequestByUser(@PathVariable Long userId,
-                                                                    @RequestParam Long eventId ) {
+                                                                    @RequestParam Long eventId) {
         return ResponseEntity.status(HttpStatus.CREATED).body(requestService.addRequestByUser(userId, eventId));
     }
 
     @PatchMapping("/{userId}/requests/{requestId}/cancel")
-    public ResponseEntity<ParticipationRequestDto> cancelRequestByUser(@PathVariable Long userId, @PathVariable Long requestId) {
+    public ResponseEntity<ParticipationRequestDto> cancelRequestByUser(@PathVariable Long userId,
+                                                                       @PathVariable Long requestId) {
         return ResponseEntity.ok(requestService.cancelRequestByUser(userId, requestId));
     }
 }

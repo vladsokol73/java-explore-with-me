@@ -1,7 +1,7 @@
 package ru.practicum.explore.compilation;
 
 
-import ru.practicum.CompilationDto;
+import ru.practicum.compilations.CompilationDto;
 import ru.practicum.compilations.NewCompilationDto;
 import ru.practicum.explore.event.EventMapper;
 

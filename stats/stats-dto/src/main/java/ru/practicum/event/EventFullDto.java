@@ -5,15 +5,10 @@ import lombok.Data;
 import ru.practicum.category.CategoryDto;
 import ru.practicum.user.UserShortDto;
 
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-
 @Data
 @Builder
 public class EventFullDto {     //Дата и время - yyyy-MM-dd HH:mm:ss
 
-//    @Min(20)
-//    @Max(2000)
     private String annotation;  //Краткое описание события
 
     private CategoryDto category;  //id категории к которой относится событие
@@ -22,8 +17,7 @@ public class EventFullDto {     //Дата и время - yyyy-MM-dd HH:mm:ss
 
     private String createdOn;  //Дата и время создания события
 
-    @Min(20)
-    @Max(7000)
+
     private String description;  //Полное описание события
 
     private String eventDate; //Дата и время события
@@ -48,8 +42,6 @@ public class EventFullDto {     //Дата и время - yyyy-MM-dd HH:mm:ss
     */
     private Boolean requestModeration;  //Нужна ли пре-модерация заявок на участие
 
-    @Min(3)
-    @Max(120)
     private String title;  //Заголовок события
 
     private Long views;   //Количество просмотрев события

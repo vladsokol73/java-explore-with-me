@@ -7,8 +7,6 @@ import ru.practicum.explore.location.Location;
 import ru.practicum.explore.user.User;
 
 import javax.persistence.*;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
 import java.time.LocalDateTime;
 
 
@@ -66,9 +64,6 @@ public class Event {
     */
     private Boolean requestModeration;
 
-
-    @Min(3)
-    @Max(120)
     private String title;  //Заголовок события
 
     private Long views;
