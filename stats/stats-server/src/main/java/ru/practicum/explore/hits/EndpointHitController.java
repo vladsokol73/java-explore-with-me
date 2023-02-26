@@ -11,13 +11,10 @@ import java.util.List;
 
 @RestController
 @Slf4j
+@RequiredArgsConstructor
 public class EndpointHitController {
 
     private final EndpointHitService endpointHitService;
-
-    public EndpointHitController(EndpointHitService endpointHitService) {
-        this.endpointHitService = endpointHitService;
-    }
 
     @PostMapping(path = "/hit")
     public ResponseEntity<Void> creatHit(@RequestBody EndpointHitDto endpointHitDto) {
