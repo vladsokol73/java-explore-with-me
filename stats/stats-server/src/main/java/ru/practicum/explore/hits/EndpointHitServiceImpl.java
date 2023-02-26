@@ -1,5 +1,6 @@
 package ru.practicum.explore.hits;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.practicum.EndpointHit.EndpointHitDto;
 import ru.practicum.EndpointHit.ViewStats;
