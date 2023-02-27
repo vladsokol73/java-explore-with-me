@@ -10,9 +10,9 @@ import ru.practicum.EndpointHit.ViewStats;
 
 import java.util.List;
 
-@RequiredArgsConstructor
 @RestController
 @Slf4j
+@RequiredArgsConstructor
 public class EndpointHitController {
 
     private final EndpointHitService endpointHitService;
