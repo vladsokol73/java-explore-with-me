@@ -11,6 +11,8 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Data
+@ToString
 public class ApiError {
 
     private List<String> errors; //Список стектрейсов или описания ошибок
