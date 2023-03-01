@@ -1,5 +1,6 @@
 package ru.practicum.explore.hits;
 
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -9,15 +10,12 @@ import ru.practicum.EndpointHit.ViewStats;
 
 import java.util.List;
 
+@AllArgsConstructor
 @RestController
 @Slf4j
 public class EndpointHitController {
 
     private final EndpointHitService endpointHitService;
-
-    public EndpointHitController(EndpointHitService endpointHitService) {
-        this.endpointHitService = endpointHitService;
-    }
 
     @PostMapping(path = "/hit")
     public ResponseEntity<Void> creatHit(@RequestBody EndpointHitDto endpointHitDto) {
