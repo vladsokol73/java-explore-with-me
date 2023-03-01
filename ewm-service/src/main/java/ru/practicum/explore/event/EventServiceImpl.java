@@ -3,7 +3,7 @@ package ru.practicum.explore.event;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import ru.practicum.EndpointHit.ViewStats;
+import ru.practicum.endpointhit.ViewStats;
 import ru.practicum.event.*;
 import ru.practicum.ewm.client.stats.StatsClient;
 import ru.practicum.explore.category.Category;

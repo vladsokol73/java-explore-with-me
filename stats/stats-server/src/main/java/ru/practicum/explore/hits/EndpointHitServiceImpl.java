@@ -1,8 +1,9 @@
 package ru.practicum.explore.hits;
 
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.practicum.EndpointHit.EndpointHitDto;
-import ru.practicum.EndpointHit.ViewStats;
+import ru.practicum.endpointhit.EndpointHitDto;
+import ru.practicum.endpointhit.ViewStats;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -11,13 +12,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@AllArgsConstructor
 public class EndpointHitServiceImpl implements EndpointHitService {
 
     private final EndpointHitRepository endpointHitRepository;
-
-    public EndpointHitServiceImpl(EndpointHitRepository endpointHitRepository) {
-        this.endpointHitRepository = endpointHitRepository;
-    }
 
     @Override
     public EndpointHit creat(EndpointHitDto endpointHitDto) {

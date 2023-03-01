@@ -1,23 +1,21 @@
 package ru.practicum.explore.hits;
 
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.practicum.EndpointHit.EndpointHitDto;
-import ru.practicum.EndpointHit.ViewStats;
+import ru.practicum.endpointhit.EndpointHitDto;
+import ru.practicum.endpointhit.ViewStats;
 
 import java.util.List;
 
 @RestController
 @Slf4j
+@AllArgsConstructor
 public class EndpointHitController {
 
     private final EndpointHitService endpointHitService;
-
-    public EndpointHitController(EndpointHitService endpointHitService) {
-        this.endpointHitService = endpointHitService;
-    }
 
     @PostMapping(path = "/hit")
     public ResponseEntity<Void> creatHit(@RequestBody EndpointHitDto endpointHitDto) {

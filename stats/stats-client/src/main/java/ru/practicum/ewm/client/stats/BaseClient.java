@@ -4,7 +4,7 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
-import ru.practicum.EndpointHit.ViewStats;
+import ru.practicum.endpointhit.ViewStats;
 
 import java.util.List;
 import java.util.Map;
