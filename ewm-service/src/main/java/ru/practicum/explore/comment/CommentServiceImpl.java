@@ -1,5 +1,6 @@
 package ru.practicum.explore.comment;
 
+import lombok.AllArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import ru.practicum.comment.CommentDto;
@@ -17,6 +18,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+@AllArgsConstructor
 @Service
 public class CommentServiceImpl implements CommentService {
 
@@ -26,12 +28,6 @@ public class CommentServiceImpl implements CommentService {
     private final UserRepository userRepository;
 
     private final EventRepository eventRepository;
-
-    public CommentServiceImpl(CommentRepository commentRepository, UserRepository userRepository, EventRepository eventRepository) {
-        this.commentRepository = commentRepository;
-        this.userRepository = userRepository;
-        this.eventRepository = eventRepository;
-    }
 
     @Override
     public CommentDto addComment(Long userId, Long eventId, CommentDto commentDto) {

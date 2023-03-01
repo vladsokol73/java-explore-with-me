@@ -1,5 +1,6 @@
 package ru.practicum.explore.controller;
 
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +25,7 @@ import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 
+@AllArgsConstructor
 @Slf4j
 @RestController
 @RequestMapping("admin/")
@@ -35,15 +37,6 @@ public class AdminController {
     private final CompilationService compilationService;
 
     private final CommentService commentService;
-
-    public AdminController(UserService userService, CategoryService categoryService,
-                           EventService eventService, CompilationService compilationService, CommentService commentService) {
-        this.userService = userService;
-        this.categoryService = categoryService;
-        this.eventService = eventService;
-        this.compilationService = compilationService;
-        this.commentService = commentService;
-    }
 
     @GetMapping("/users")
     public List<UserDto> getUsers(@RequestParam (name = "ids") ArrayList<Long> ids,
