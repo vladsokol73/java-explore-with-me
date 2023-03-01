@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ru.practicum.comment.CommentDto;
 import ru.practicum.compilations.CompilationDto;
 import ru.practicum.category.CategoryDto;
 import ru.practicum.category.NewCategoryDto;
@@ -12,6 +13,7 @@ import ru.practicum.compilations.UpdateCompilationRequest;
 import ru.practicum.event.EventFullDto;
 import ru.practicum.event.UpdateEventAdminRequest;
 import ru.practicum.explore.category.CategoryService;
+import ru.practicum.explore.comment.CommentService;
 import ru.practicum.explore.compilation.CompilationService;
 import ru.practicum.explore.event.EventService;
 import ru.practicum.explore.user.UserService;
@@ -32,12 +34,15 @@ public class AdminController {
     private final EventService eventService;
     private final CompilationService compilationService;
 
+    private final CommentService commentService;
+
     public AdminController(UserService userService, CategoryService categoryService,
-                           EventService eventService, CompilationService compilationService) {
+                           EventService eventService, CompilationService compilationService, CommentService commentService) {
         this.userService = userService;
         this.categoryService = categoryService;
         this.eventService = eventService;
         this.compilationService = compilationService;
+        this.commentService = commentService;
     }
 
     @GetMapping("/users")
@@ -115,5 +120,20 @@ public class AdminController {
     public ResponseEntity<CompilationDto> updateCompilation(@PathVariable Long compId,
                                                             @RequestBody UpdateCompilationRequest compilationRequest) {
         return ResponseEntity.ok(compilationService.updateCompilation(compId, compilationRequest));
+    }
+
+    @GetMapping("/comments")
+    public ResponseEntity<List<CommentDto>> getCommentsByAdmin(@RequestParam (required = false) String text,
+                                                               @RequestParam (name = "from", defaultValue = "0") Integer from,
+                                                               @RequestParam (name = "size", defaultValue = "10") Integer size,
+                                                               @RequestParam (required = false) String rangeStart,
+                                                               @RequestParam (required = false) String rangeEnd) {
+        return ResponseEntity.ok(commentService.getCommentsByAdmin(text, from, size, rangeStart, rangeEnd));
+    }
+
+    @PatchMapping("/comments/{commentId}")
+    public ResponseEntity<CommentDto> updateCommentByAdmin(@PathVariable Long commentId,
+                                                           @RequestParam("approved") Boolean approved) {
+        return ResponseEntity.ok(commentService.updateCommentByAdmin(commentId, approved));
     }
 }

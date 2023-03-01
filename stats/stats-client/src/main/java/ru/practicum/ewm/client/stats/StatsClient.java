@@ -6,8 +6,8 @@ import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.web.util.DefaultUriBuilderFactory;
-import ru.practicum.endpointHit.EndpointHitDto;
-import ru.practicum.endpointHit.ViewStats;
+import ru.practicum.EndpointHit.EndpointHitDto;
+import ru.practicum.EndpointHit.ViewStats;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
