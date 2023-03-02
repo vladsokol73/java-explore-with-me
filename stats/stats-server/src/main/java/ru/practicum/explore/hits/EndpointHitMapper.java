@@ -1,6 +1,6 @@
 package ru.practicum.explore.hits;
 
-import ru.practicum.EndpointHit.EndpointHitDto;
+import ru.practicum.endpointhit.EndpointHitDto;
 
 public class EndpointHitMapper {
 

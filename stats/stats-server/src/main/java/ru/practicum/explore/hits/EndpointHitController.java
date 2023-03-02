@@ -5,8 +5,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.practicum.EndpointHit.EndpointHitDto;
-import ru.practicum.EndpointHit.ViewStats;
+import ru.practicum.endpointhit.EndpointHitDto;
+import ru.practicum.endpointhit.ViewStats;
 
 import java.util.List;
 
