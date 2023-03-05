@@ -1,9 +1,5 @@
 package ru.practicum.explore.request;
 
-import ru.practicum.request.EventRequestStatusUpdateRequest;
-import ru.practicum.request.EventRequestStatusUpdateResult;
-import ru.practicum.request.ParticipationRequestDto;
-
 import java.util.List;
 
 public interface RequestService {

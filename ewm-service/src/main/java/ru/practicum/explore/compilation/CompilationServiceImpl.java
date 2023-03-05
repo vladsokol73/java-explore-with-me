@@ -2,9 +2,6 @@ package ru.practicum.explore.compilation;
 
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
-import ru.practicum.compilations.CompilationDto;
-import ru.practicum.compilations.NewCompilationDto;
-import ru.practicum.compilations.UpdateCompilationRequest;
 import ru.practicum.explore.error.BadRequest;
 import ru.practicum.explore.error.NotFoundException;
 import ru.practicum.explore.event.EventRepository;

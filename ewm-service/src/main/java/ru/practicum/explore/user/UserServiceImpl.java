@@ -4,8 +4,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import ru.practicum.explore.error.BadRequest;
 import ru.practicum.explore.error.NotFoundException;
-import ru.practicum.user.NewUserRequest;
-import ru.practicum.user.UserDto;
 
 import java.util.ArrayList;
 import java.util.List;

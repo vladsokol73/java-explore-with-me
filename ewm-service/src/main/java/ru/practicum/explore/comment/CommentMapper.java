@@ -1,7 +1,5 @@
 package ru.practicum.explore.comment;
 
-import ru.practicum.comment.CommentDto;
-
 import java.time.format.DateTimeFormatter;
 
 public class CommentMapper {

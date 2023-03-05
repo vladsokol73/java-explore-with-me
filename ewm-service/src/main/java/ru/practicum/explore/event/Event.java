@@ -1,7 +1,6 @@
 package ru.practicum.explore.event;
 
 import lombok.*;
-import ru.practicum.event.State;
 import ru.practicum.explore.category.Category;
 import ru.practicum.explore.location.Location;
 import ru.practicum.explore.user.User;

@@ -1,17 +1,13 @@
 package ru.practicum.explore.request;
 
 import org.springframework.stereotype.Service;
-import ru.practicum.event.State;
+import ru.practicum.explore.event.State;
 import ru.practicum.explore.error.ConflictException;
 import ru.practicum.explore.error.NotFoundException;
 import ru.practicum.explore.event.Event;
 import ru.practicum.explore.event.EventRepository;
 import ru.practicum.explore.user.User;
 import ru.practicum.explore.user.UserRepository;
-import ru.practicum.request.EventRequestStatusUpdateRequest;
-import ru.practicum.request.EventRequestStatusUpdateResult;
-import ru.practicum.request.ParticipationRequestDto;
-import ru.practicum.request.RequestStatus;
 
 import java.time.LocalDateTime;
 import java.util.List;

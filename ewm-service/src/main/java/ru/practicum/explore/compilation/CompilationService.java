@@ -1,9 +1,5 @@
 package ru.practicum.explore.compilation;
 
-import ru.practicum.compilations.CompilationDto;
-import ru.practicum.compilations.NewCompilationDto;
-import ru.practicum.compilations.UpdateCompilationRequest;
-
 import java.util.List;
 
 public interface CompilationService {

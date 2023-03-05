@@ -1,7 +1,5 @@
 package ru.practicum.explore.event;
 
-import ru.practicum.event.*;
-
 import java.util.List;
 
 public interface EventService {
