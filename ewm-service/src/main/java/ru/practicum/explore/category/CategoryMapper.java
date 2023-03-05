@@ -1,8 +1,5 @@
 package ru.practicum.explore.category;
 
-import ru.practicum.category.CategoryDto;
-import ru.practicum.category.NewCategoryDto;
-
 public class CategoryMapper {
 
     public static Category toCategory(NewCategoryDto newCategoryDto) {

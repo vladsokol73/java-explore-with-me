@@ -4,17 +4,17 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.practicum.comment.CommentDto;
-import ru.practicum.event.EventFullDto;
-import ru.practicum.event.EventShortDto;
-import ru.practicum.event.NewEventDto;
-import ru.practicum.event.UpdateEventUserRequest;
+import ru.practicum.explore.comment.CommentDto;
+import ru.practicum.explore.event.EventFullDto;
+import ru.practicum.explore.event.EventShortDto;
+import ru.practicum.explore.event.NewEventDto;
+import ru.practicum.explore.event.UpdateEventUserRequest;
 import ru.practicum.explore.comment.CommentService;
 import ru.practicum.explore.event.EventService;
 import ru.practicum.explore.request.RequestService;
-import ru.practicum.request.EventRequestStatusUpdateRequest;
-import ru.practicum.request.EventRequestStatusUpdateResult;
-import ru.practicum.request.ParticipationRequestDto;
+import ru.practicum.explore.request.EventRequestStatusUpdateRequest;
+import ru.practicum.explore.request.EventRequestStatusUpdateResult;
+import ru.practicum.explore.request.ParticipationRequestDto;
 
 import java.util.List;
 

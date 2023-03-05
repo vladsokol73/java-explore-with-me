@@ -1,9 +1,5 @@
 package ru.practicum.explore.user;
 
-import ru.practicum.user.NewUserRequest;
-import ru.practicum.user.UserDto;
-import ru.practicum.user.UserShortDto;
-
 public class UserMapper {
 
     public static User toUser(NewUserRequest newUserRequest) {

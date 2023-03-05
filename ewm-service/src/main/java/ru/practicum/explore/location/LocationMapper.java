@@ -1,7 +1,5 @@
 package ru.practicum.explore.location;
 
-import ru.practicum.event.LocationDto;
-
 public class LocationMapper {
     public static Location toLocation(LocationDto locationDto) {
         return Location.builder()

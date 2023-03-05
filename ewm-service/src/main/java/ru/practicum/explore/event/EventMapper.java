@@ -1,8 +1,5 @@
 package ru.practicum.explore.event;
 
-import ru.practicum.event.EventFullDto;
-import ru.practicum.event.EventShortDto;
-import ru.practicum.event.NewEventDto;
 import ru.practicum.explore.category.CategoryMapper;
 import ru.practicum.explore.location.LocationMapper;
 import ru.practicum.explore.user.UserMapper;

@@ -1,7 +1,5 @@
 package ru.practicum.explore.comment;
 
-import ru.practicum.comment.CommentDto;
-
 import java.util.List;
 
 public interface CommentService {

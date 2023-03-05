@@ -1,7 +1,5 @@
 package ru.practicum.explore.request;
 
-import ru.practicum.request.ParticipationRequestDto;
-
 import java.time.format.DateTimeFormatter;
 
 public class RequestMapper {

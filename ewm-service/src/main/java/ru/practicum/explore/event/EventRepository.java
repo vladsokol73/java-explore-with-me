@@ -3,7 +3,6 @@ package ru.practicum.explore.event;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
-import ru.practicum.event.State;
 import ru.practicum.explore.category.Category;
 import ru.practicum.explore.user.User;
 
@@ -13,8 +12,6 @@ import java.util.List;
 public interface EventRepository extends JpaRepository<Event, Long> {
 
     List<Event> findEventsByCategory(Category category);
-
-    List<Event> findEventsByInitiator(User user, Pageable pageable);
 
     List<Event> findEventsByInitiatorId(Long userId, Pageable pageable);
 

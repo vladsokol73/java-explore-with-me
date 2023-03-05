@@ -2,8 +2,6 @@ package ru.practicum.explore.category;
 
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
-import ru.practicum.category.CategoryDto;
-import ru.practicum.category.NewCategoryDto;
 import ru.practicum.explore.error.BadRequest;
 import ru.practicum.explore.error.ConflictException;
 import ru.practicum.explore.error.NotFoundException;
